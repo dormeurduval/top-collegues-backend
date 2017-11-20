@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.8.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -23,6 +23,38 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
+
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql://localhost:3306/top</jdbc.url>
+				<jdbc.user>top</jdbc.user>
+				<jdbc.pass>top</jdbc.pass>
+				<jpa.hibernate.ddl>create-drop</jpa.hibernate.ddl>
+				<jdbc.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</jdbc.dialect>
+				<jdbc.connections.max.active>5</jdbc.connections.max.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql://${env.MYSQL_ADDON_HOST}:${env.MYSQL_ADDON_PORT}/${env.MYSQL_ADD
+					ON_DB}</jdbc.url>
+				<jdbc.user>${env.MYSQL_ADDON_USER}</jdbc.user>
+				<jdbc.pass>${env.MYSQL_ADDON_PASSWORD}</jdbc.pass>
+				<jpa.hibernate.ddl>${env.HIBERNATE_DDL}</jpa.hibernate.ddl>
+				<jdbc.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</jdbc.dialect>
+				<jdbc.connections.max.active>2</jdbc.connections.max.active>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -52,6 +84,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>top</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
