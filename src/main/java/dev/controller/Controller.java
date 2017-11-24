@@ -31,8 +31,10 @@ public class Controller {
 	
 	@RequestMapping(value="/collegues",method=RequestMethod.POST,produces = "application/json")
 	public @ResponseBody Collaborateur matricule(@RequestBody Collaborateur collaborateur){
-		
-		return collaborateurRepository.save(collaborateur);
+		if(collaborateurRepository.findByNom(collaborateur.getNom())==null)
+			return collaborateurRepository.save(collaborateur);
+		else
+			return collaborateur;
 		
 	}
 	
